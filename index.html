@@ -1,0 +1,314 @@
+import React, { useEffect, useMemo, useState } from "react";
+import { motion } from "framer-motion";
+import { ExternalLink, MonitorPlay, Sparkles, Users, Museum, GraduationCap, Mail, ChevronDown } from "lucide-react";
+
+/*
+  Duke AI Summit Showcase Website Starter
+  Replace the placeholder links and image URLs in the CONTENT section below.
+  This is designed as a single-page kiosk/demo website.
+*/
+
+const CONTENT = {
+  presenter: "Nubia Nurain Khan",
+  event: "Duke AI in Education Summit Showcase Demo",
+  title: "Curating with AI",
+  subtitle: "Virtual Exhibitions, Student Agency, and Critical Pedagogy in Art History",
+  description:
+    "An interactive teaching experiment using AI agents, virtual reality, and curatorial practice to help students understand museum exhibitions as constructed interpretive arguments.",
+  contactEmail: "nubianurain@gmail.com",
+  kioskImages: [
+    {
+      label: "Epochal Assemblages: Digital Curation",
+      caption: "A FrameVR curatorial decision-making environment modeled around museum exhibition logic.",
+      image:
+        "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?q=80&w=1600&auto=format&fit=crop",
+    },
+    {
+      label: "AI Curatorial Agents",
+      caption: "Embedded knowledge agents support interpretation, reflection, and critical AI literacy.",
+      image:
+        "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1600&auto=format&fit=crop",
+    },
+    {
+      label: "Student Virtual Exhibitions",
+      caption: "Students create compact digital exhibitions using artworks, spatial design, and interpretive framing.",
+      image:
+        "https://images.unsplash.com/photo-1547891654-e66ed7ebb968?q=80&w=1600&auto=format&fit=crop",
+    },
+    {
+      label: "Teaching Through Curatorial Play",
+      caption: "The project turns exhibition-making into a playable humanities-centered learning experience.",
+      image:
+        "https://images.unsplash.com/photo-1561214115-f2f134cc4912?q=80&w=1600&auto=format&fit=crop",
+    },
+  ],
+  links: [
+    {
+      title: "Enter the FrameVR Game",
+      eyebrow: "Main Demo",
+      description:
+        "Open Epochal Assemblages: Digital Curation, the interactive VR environment where visitors make curatorial choices and compare them with exhibition constraints.",
+      url: "https://framevr.io/YOUR-GAME-LINK-HERE",
+      image:
+        "https://images.unsplash.com/photo-1597733336794-12d05021d510?q=80&w=1200&auto=format&fit=crop",
+      icon: Museum,
+    },
+    {
+      title: "Student FrameVR Exhibitions",
+      eyebrow: "Class Projects",
+      description:
+        "Browse selected student-built virtual exhibitions from ARTHIST 102D: Introduction to World Art History from 1200 to the Present.",
+      url: "https://YOUR-STUDENT-EXHIBITION-LINK-HERE",
+      image:
+        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
+      icon: GraduationCap,
+    },
+    {
+      title: "Curatorial Results Pages",
+      eyebrow: "Reflection Interface",
+      description:
+        "View the web-based results/reflection pages that compare visitor choices with one possible curatorial reference plan.",
+      url: "https://YOUR-GITHUB-PAGES-LINK-HERE",
+      image:
+        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200&auto=format&fit=crop",
+      icon: MonitorPlay,
+    },
+    {
+      title: "About the Teaching Experiment",
+      eyebrow: "Project Context",
+      description:
+        "Read a short explanation of how AI, VR, and curatorial practice were integrated into an undergraduate art history course.",
+      url: "#about",
+      image:
+        "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1200&auto=format&fit=crop",
+      icon: Users,
+    },
+  ],
+};
+
+function cn(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
+
+function KioskCarousel({ items }) {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIndex((current) => (current + 1) % items.length);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [items.length]);
+
+  const current = items[index];
+
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-black text-white">
+      {items.map((item, itemIndex) => (
+        <motion.div
+          key={item.label}
+          initial={false}
+          animate={{ opacity: itemIndex === index ? 1 : 0 }}
+          transition={{ duration: 0.9 }}
+          className="absolute inset-0"
+        >
+          <img
+            src={item.image}
+            alt={item.label}
+            className="h-full w-full object-cover opacity-55"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/55 to-black/20" />
+        </motion.div>
+      ))}
+
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-between px-6 py-8 md:px-10 lg:px-12">
+        <header className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.35em] text-white/70 md:text-sm">
+              {CONTENT.event}
+            </p>
+            <p className="mt-2 text-sm text-white/75">Presented by {CONTENT.presenter}</p>
+          </div>
+          <div className="rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs uppercase tracking-[0.25em] backdrop-blur-md">
+            Showcase Demo
+          </div>
+        </header>
+
+        <main className="max-w-5xl pb-12 pt-24">
+          <motion.div
+            key={current.label}
+            initial={{ opacity: 0, y: 22 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+          >
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm text-white/80 backdrop-blur-md">
+              <Sparkles className="h-4 w-4" />
+              {current.label}
+            </div>
+            <h1 className="max-w-5xl text-5xl font-semibold leading-tight tracking-tight md:text-7xl lg:text-8xl">
+              {CONTENT.title}
+            </h1>
+            <h2 className="mt-5 max-w-4xl text-xl font-light leading-relaxed text-white/85 md:text-3xl">
+              {CONTENT.subtitle}
+            </h2>
+            <p className="mt-8 max-w-3xl text-base leading-8 text-white/75 md:text-lg">
+              {current.caption}
+            </p>
+          </motion.div>
+        </main>
+
+        <footer className="flex flex-col gap-6 pb-4 md:flex-row md:items-end md:justify-between">
+          <div className="flex gap-2">
+            {items.map((item, dotIndex) => (
+              <button
+                key={item.label}
+                onClick={() => setIndex(dotIndex)}
+                aria-label={`Show ${item.label}`}
+                className={cn(
+                  "h-2.5 rounded-full transition-all",
+                  dotIndex === index ? "w-12 bg-white" : "w-2.5 bg-white/35 hover:bg-white/60"
+                )}
+              />
+            ))}
+          </div>
+          <a
+            href="#links"
+            className="group inline-flex items-center gap-2 text-sm uppercase tracking-[0.25em] text-white/75 transition hover:text-white"
+          >
+            Scroll for links
+            <ChevronDown className="h-4 w-4 transition group-hover:translate-y-1" />
+          </a>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+function LinkCard({ item, index }) {
+  const Icon = item.icon;
+  const isInternal = item.url.startsWith("#");
+
+  return (
+    <motion.a
+      href={item.url}
+      target={isInternal ? undefined : "_blank"}
+      rel={isInternal ? undefined : "noreferrer"}
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.25 }}
+      transition={{ duration: 0.5, delay: index * 0.08 }}
+      className="group overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-2xl shadow-black/20 transition hover:-translate-y-1 hover:border-white/25 hover:bg-white/[0.07]"
+    >
+      <div className="relative h-56 overflow-hidden">
+        <img
+          src={item.image}
+          alt={item.title}
+          className="h-full w-full object-cover opacity-75 transition duration-700 group-hover:scale-105 group-hover:opacity-90"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="absolute left-5 top-5 rounded-full bg-black/65 p-3 backdrop-blur-md">
+          <Icon className="h-5 w-5 text-white" />
+        </div>
+      </div>
+      <div className="p-6 md:p-7">
+        <p className="text-xs uppercase tracking-[0.25em] text-white/45">{item.eyebrow}</p>
+        <h3 className="mt-3 flex items-start justify-between gap-3 text-2xl font-semibold leading-tight text-white">
+          {item.title}
+          <ExternalLink className="mt-1 h-5 w-5 shrink-0 text-white/45 transition group-hover:text-white" />
+        </h3>
+        <p className="mt-4 text-sm leading-7 text-white/65">{item.description}</p>
+      </div>
+    </motion.a>
+  );
+}
+
+function AboutSection() {
+  const points = useMemo(
+    () => [
+      {
+        title: "AI as a critical tool",
+        text:
+          "The project treats AI not only as a productivity tool, but as something students can question, situate, and use critically within humanities interpretation.",
+      },
+      {
+        title: "VR as exhibition practice",
+        text:
+          "FrameVR becomes a space for making curatorial decisions visible: selection, placement, grouping, sequencing, and interpretation.",
+      },
+      {
+        title: "Students as exhibition makers",
+        text:
+          "The classroom assignment asks students to design compact virtual exhibitions that connect artworks to themes, arguments, and spatial experience.",
+      },
+    ],
+    []
+  );
+
+  return (
+    <section id="about" className="mx-auto max-w-7xl px-6 py-24 md:px-10 lg:px-12">
+      <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
+        <div>
+          <p className="text-xs uppercase tracking-[0.35em] text-white/45">About the project</p>
+          <h2 className="mt-4 text-4xl font-semibold leading-tight text-white md:text-6xl">
+            A humanities-centered model for teaching with AI.
+          </h2>
+        </div>
+        <div>
+          <p className="text-lg leading-9 text-white/70">{CONTENT.description}</p>
+          <div className="mt-8 grid gap-4">
+            {points.map((point) => (
+              <div key={point.title} className="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
+                <h3 className="text-xl font-semibold text-white">{point.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-white/65">{point.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function DukeAISummitShowcaseSite() {
+  return (
+    <div className="min-h-screen scroll-smooth bg-black text-white">
+      <KioskCarousel items={CONTENT.kioskImages} />
+
+      <section id="links" className="mx-auto max-w-7xl px-6 py-24 md:px-10 lg:px-12">
+        <div className="mb-12 max-w-4xl">
+          <p className="text-xs uppercase tracking-[0.35em] text-white/45">Explore the demo</p>
+          <h2 className="mt-4 text-4xl font-semibold leading-tight md:text-6xl">
+            Open the VR spaces, student projects, and reflection pages.
+          </h2>
+          <p className="mt-6 text-base leading-8 text-white/65 md:text-lg">
+            This section is designed for the poster-session format: attendees can walk up, scan the page, and quickly enter the parts of the project they want to explore.
+          </p>
+        </div>
+
+        <div className="grid gap-6 md:grid-cols-2">
+          {CONTENT.links.map((item, index) => (
+            <LinkCard key={item.title} item={item} index={index} />
+          ))}
+        </div>
+      </section>
+
+      <AboutSection />
+
+      <footer className="border-t border-white/10 px-6 py-10 md:px-10 lg:px-12">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="text-lg font-semibold text-white">{CONTENT.presenter}</p>
+            <p className="mt-1 text-sm text-white/55">{CONTENT.event}</p>
+          </div>
+          <a
+            href={`mailto:${CONTENT.contactEmail}`}
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.04] px-5 py-3 text-sm text-white/75 transition hover:border-white/30 hover:bg-white/[0.08] hover:text-white"
+          >
+            <Mail className="h-4 w-4" />
+            Contact presenter
+          </a>
+        </div>
+      </footer>
+    </div>
+  );
+}
